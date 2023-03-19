@@ -1,45 +1,42 @@
-Documentation: Stock Trading Signal Predictor
-Overview
-This Python program uses historical stock data and machine learning to predict buy or sell signals for given stock symbols. It fetches historical stock data using the Yahoo Finance API, calculates various technical indicators, and trains a Random Forest Classifier model to generate trading signals. The program also evaluates the model's accuracy to provide an idea of its effectiveness.
-
-Technical Indicators
-The program calculates the following technical indicators:
-
-Simple Moving Average (SMA)
-Exponential Moving Average (EMA)
-Relative Strength Index (RSI)
-Bollinger Bands (Upper and Lower)
-These indicators help the model understand stock price trends and make predictions based on historical data.
-
 Dependencies
-To run the program, make sure to install the following Python libraries:
-
+Python 3.6+
 pandas
 numpy
 yfinance
 scikit-learn
-You can install them using pip:
+tensorflow
 
-Copy code
-pip install pandas numpy yfinance scikit-learn
-Usage
-Modify the symbols list in the code to include the stock symbols for which you want to generate trading signals. By default, the list contains 'AAPL', 'GOOGL', and 'TSLA'.
+You can install the required libraries using pip or pipenv:
+pip install -r requirements.txt
 
-You can adjust the timeframe variable to set the desired data frequency. The default is set to '1d' for daily data.
+Open a terminal or command prompt and navigate to the directory where the script is located.
 
-Run the program:
+Run the script using the following command:
 
-Copy code
-python stock_signal_predictor.py
-The program will fetch historical data for the specified symbols, calculate the technical indicators, train the model, and output the model's accuracy.
+(venv) python stock_analysis.py
+The script will execute the following steps:
 
-Finally, the program will print buy or sell signals for each stock symbol based on the trained model.
+Fetch stock data for the specified symbols (AAPL, GOOGL, TSLA, MSFT, AMZN) for the past year.
+Calculate technical indicators: Simple Moving Average (SMA), Exponential Moving Average (EMA), Relative Strength Index (RSI), and Bollinger Bands.
+Preprocess the data and split it into training and testing sets.
+Train and evaluate a Random Forest classifier and an LSTM model on the data.
+Print the accuracies of both models, allowing you to compare their performance.
+Generate buy/sell signals for each stock symbol using the Random Forest model. You can modify the generate_signals function to use the LSTM model if you find it performs better.
+Note: The generated signals are for educational purposes only and should not be used for actual trading decisions without further research and validation.
 
-Example
-With the default settings ('AAPL', 'GOOGL', 'TSLA' as symbols and '1d' as the timeframe), running the program will output something similar to the following:
+Customization
+You can customize the stock symbols, date range, and technical indicator parameters by modifying the corresponding variables in the stock_analysis.py script.
 
+For example, to analyze a different set of stock symbols, change the symbols variable:
+symbols = ['FB', 'NFLX', 'NVDA', 'ADBE', 'CRM']
 
-Model accuracy: 0.75
-{'AAPL': 'Buy', 'GOOGL': 'Sell', 'TSLA': 'Buy'}
+To change the date range for stock data, modify the start_date and end_date variables:
+end_date = datetime.now()
+start_date = end_date - timedelta(days=730)  # Fetch data for the past 2 years
 
-This output means that the model has an accuracy of 0.75 (75%) and, based on its predictions, recommends buying AAPL and TSLA stocks and selling GOOGL stock. Please note that the model's accuracy and the generated signals might vary each time the program is run, depending on the latest stock data and the random state used during training.
+To adjust the parameters for the technical indicators, update the values in the corresponding function calls:
+data['SMA'] = calculate_SMA(data['Close'], 21)  # Change SMA period to 21 days
+data['EMA'] = calculate_EMA(data['Close'], 21)  # Change EMA period to 21 days
+data['RSI'] = calculate_RSI(data['Close'], 14)  # Keep RSI period at 14 days
+data['UpperBB'], data['LowerBB'] = calculate_BollingerBands(data['Close'], 30)  # Change Bollinger Bands period to 30 days
+You can also adjust the parameters of the machine learning models and the training process to optimize their performance.
